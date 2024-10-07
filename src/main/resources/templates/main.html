@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Gallery</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Flexbox를 사용하여 모든 카드의 높이를 동일하게 유지 */
+        .card {
+            display: flex;
+            flex-direction: column;
+            height: 100%; /* 카드 높이를 100%로 설정 */
+        }
+
+        .card-body {
+            flex-grow: 1; /* 카드 본체는 남는 공간을 차지하게 설정 */
+        }
+
+        .card-img-top {
+            height: 200px; /* 고정된 이미지 높이 */
+            object-fit: cover; /* 이미지가 카드 크기에 맞춰서 조정되도록 설정 */
+        }
+
+        .pagination {
+            flex-wrap: wrap;
+        }
+
+        .pagination .page-item .page-link {
+            min-width: 2.5rem;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .col-md-4 {
+                max-width: 50%;
+                flex: 0 0 50%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .col-md-4 {
+                max-width: 100%;
+                flex: 0 0 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="http://k8s-petconnectgroup-cb3ee8764e-279873253.ap-northeast-2.elb.amazonaws.com">
+                <img src="https://pet-connect-repo.s3.ap-northeast-2.amazonaws.com/pet_connect_logo.png" alt="Logo" width="30" height="30" class="d-inline-block align-top">
+            
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/login}">로그인</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/register}">회원가입</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-primary" th:href="@{/pet_register}">실종 펫 등록</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Animal Gallery -->
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Animal Gallery</h1>
+        <div class="row">
+            <div class="col-md-4" th:each="animal : ${animals}">
+                <div class="card mb-4">
+                    <img th:src="${animal.IMAGE_COURS}" class="card-img-top" alt="Animal thumbnail">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${animal.SPECIES_NM}">Animal Title</h5>
+                        <p class="card-text" th:text="'색상 : ' + ${animal.COLOR_NM}">Animal Description</p>
+                        <!-- 동물 상세 정보 페이지로 링크 연결 (Idx 변수를 사용) -->
+                        <a th:href="@{/animal/{Idx}(Idx=${animal.Idx})}" class="btn btn-primary">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS (jQuery 및 Popper.js 포함) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
